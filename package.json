@@ -1,0 +1,23 @@
+{
+  "name": "bamazondependencies",
+  "version": "1.0.0",
+  "description": "",
+  "main": "bamazoncustomer.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/leopoldleopold/bamazon.git"
+  },
+  "author": "Justin Acosta",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/leopoldleopold/bamazon/issues"
+  },
+  "homepage": "https://github.com/leopoldleopold/bamazon#readme",
+  "dependencies": {
+    "inquirer": "^7.1.0",
+    "mysql": "^2.18.1"
+  }
+}
