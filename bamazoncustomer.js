@@ -60,21 +60,14 @@ var buy = function () {
             }
         ])
         .then(function (answer) {
-            // console.log(answer.buy);
             var u = answer.buy;
-            u;
-            var e = answer.qty;
-            // console.log(u); 
-            // console.log(arr[u].item_id);      
+            var e = answer.qty;     
             checkId(u, e);
         });
 }
 // function to check if id exists in database and quantity
 function checkId(x, y) {
     x--;
-    console.log(x);
-    console.log(y);
-    // console.log(arr[x].product_name);
     if (x > arr.length) {
         console.log("That ID does not exist, please submit selection again.");
         setTimeout(function () { buy(); }, 2000);
