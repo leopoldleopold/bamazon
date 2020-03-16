@@ -24,10 +24,8 @@ connection.connect(function (err) {
 function initApp() {
     console.log(hello);
     home();
-    // openShop();
-    // setTimeout(function(){openShop();}, 2000);
 };
-// function allowing user choice
+// function allowing user choice to exit, view history, purchase
 function home() {
     inquirer
         .prompt([
@@ -41,15 +39,12 @@ function home() {
             }
         ])
         .then(function(answer){
-            console.log("WORKED");
             var w = answer.home.charAt(0);
             switch (w) {
                 case "B":
-                    console.log("BAAAA");
                     openShop();
                     break;
                 case "P":
-                    console.log("PUR");
                     break;
                 case "E":
                     console.log("Thank you for using BAMAZON!");
@@ -119,6 +114,3 @@ function checkId(x, y) {
         }
     }
 };
-// function to check if quantity exists
-
-// function to run through db
