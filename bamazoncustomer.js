@@ -131,4 +131,6 @@ function checkOut() {
         console.log("'" + cart[i].product_name + "'");
     }
     console.log("Your total is: $" + total);
+    console.log("\n" + "Thank you for using BAMAZON!")
+    setTimeout(function(){home();}, 4000);
 };
