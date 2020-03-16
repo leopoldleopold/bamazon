@@ -5,6 +5,7 @@ var inquirer = require("inquirer");
 var hello = "Welcome to BAMAZON! An online web store" +
     " for all of your shopping needs!" + "\n";
 var arr = [];
+var cart =[];
 // establish mySQL connection
 var connection = mySql.createConnection({
     host: 'localhost',
@@ -22,9 +23,41 @@ connection.connect(function (err) {
 //function to initialize app
 function initApp() {
     console.log(hello);
-    openShop();
+    home();
+    // openShop();
     // setTimeout(function(){openShop();}, 2000);
-}
+};
+// function allowing user choice
+function home() {
+    inquirer
+        .prompt([
+            {
+            name: "home",
+            type: "list",
+            message: "Select 'BAMAZON' to enter website." +
+            " Select 'Purchase History' to view purchase history." +
+            " Select 'EXIT' to exit BAMAZON",
+            choices: ["BAMAZON", "Purchase History", "EXIT"]
+            }
+        ])
+        .then(function(answer){
+            console.log("WORKED");
+            var w = answer.home.charAt(0);
+            switch (w) {
+                case "B":
+                    console.log("BAAAA");
+                    openShop();
+                    break;
+                case "P":
+                    console.log("PUR");
+                    break;
+                case "E":
+                    console.log("Thank you for using BAMAZON!");
+                    setTimeout(function(){connection.end();}, 1000);
+                    break;
+            }
+        });
+};
 // function to begin shop experience
 function openShop() {
     connection.query('SELECT * FROM products', function (error, results) {
@@ -40,7 +73,7 @@ function openShop() {
                 + "Price: " + results[i].price + " | "
                 + "Quantity " + results[i].stock_quantity + "\n");
         }
-        setTimeout(function () { buy(); }, 2000);
+        setTimeout(function(){ buy();}, 2000);
     });
 };
 // function to allow user to buy
@@ -48,7 +81,7 @@ var buy = function () {
     inquirer
         .prompt([
             {
-                name: "buy",
+                name: "id",
                 type: "number",
                 message: "What is the ID of the item" +
                     " you would like to buy?"
@@ -60,25 +93,29 @@ var buy = function () {
             }
         ])
         .then(function (answer) {
-            var u = answer.buy;
+            var u = answer.id;
             var e = answer.qty;     
             checkId(u, e);
         });
 }
-// function to check if id exists in database and quantity
+// function to check if id exists in database and valid quantity amount
 function checkId(x, y) {
     x--;
     if (x > arr.length) {
         console.log("That ID does not exist, please submit selection again.");
         setTimeout(function () { buy(); }, 2000);
-    };
-    if (y) {
-        var u = arr[x].stock_quantity;
-        if (y - u === 0) {
-            console.log("less than");
-        }
-        else if (y - u > 0) {
-            console.log("greater than");
+    }
+    else {
+        if (y) {
+            var a = arr[x].stock_quantity - y;
+            if (a < 0) {
+                console.log("Unfortunately we are out of stock....");
+            }
+            else {
+                cart.push(arr[x]);
+                console.log(cart);
+                buy();
+            }
         }
     }
 };
