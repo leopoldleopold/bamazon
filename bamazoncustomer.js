@@ -5,9 +5,10 @@ var inquirer = require("inquirer");
 var hello = "Welcome to BAMAZON! An online web store" +
     " for all of your shopping needs!" + "\n";
 var arr = [];
-var cart =[];
+var cart = [];
+var total = 0;
 // establish mySQL connection
-var connection = mySql.createConnection({
+var con = mySql.createConnection({
     host: 'localhost',
     port: 3306,
     user: 'root',
@@ -16,7 +17,7 @@ var connection = mySql.createConnection({
 });
 
 // connect to mySql
-connection.connect(function (err) {
+con.connect(function (err) {
     if (err) throw err;
     initApp();
 });
@@ -30,15 +31,15 @@ function home() {
     inquirer
         .prompt([
             {
-            name: "home",
-            type: "list",
-            message: "Select 'BAMAZON' to enter website." +
-            " Select 'Purchase History' to view purchase history." +
-            " Select 'EXIT' to exit BAMAZON",
-            choices: ["BAMAZON", "Purchase History", "EXIT"]
+                name: "home",
+                type: "list",
+                message: "Select 'BAMAZON' to enter website." +
+                    " Select 'Purchase History' to view purchase history." +
+                    " Select 'EXIT' to exit BAMAZON",
+                choices: ["BAMAZON", "Purchase History", "EXIT"]
             }
         ])
-        .then(function(answer){
+        .then(function (answer) {
             var w = answer.home.charAt(0);
             switch (w) {
                 case "B":
@@ -48,14 +49,14 @@ function home() {
                     break;
                 case "E":
                     console.log("Thank you for using BAMAZON!");
-                    setTimeout(function(){connection.end();}, 1000);
+                    setTimeout(function () { connection.end(); }, 1000);
                     break;
             }
         });
 };
 // function to begin shop experience
 function openShop() {
-    connection.query('SELECT * FROM products', function (error, results) {
+    con.query('SELECT * FROM products', function (error, results) {
         if (error) throw error;
         console.log(
             "|-------------------------|Items|-------------------------|" + "\n"
@@ -68,9 +69,10 @@ function openShop() {
                 + "Price: " + results[i].price + " | "
                 + "Quantity " + results[i].stock_quantity + "\n");
         }
-        setTimeout(function(){ buy();}, 2000);
+        setTimeout(function () { buy(); }, 2000);
     });
 };
+
 // function to allow user to buy
 var buy = function () {
     inquirer
@@ -89,7 +91,7 @@ var buy = function () {
         ])
         .then(function (answer) {
             var u = answer.id;
-            var e = answer.qty;     
+            var e = answer.qty;
             checkId(u, e);
         });
 }
@@ -105,7 +107,14 @@ function checkId(x, y) {
             var a = arr[x].stock_quantity - y;
             if (a < 0) {
                 console.log("Unfortunately we are out of stock....");
+                buy();
             }
+            // |----------------------TEST------------------------------|
+            // to test Checkout
+            else if (1 < cart.length) {
+                checkOut();
+            }
+            // |--------------------END TEST----------------------------|
             else {
                 cart.push(arr[x]);
                 console.log(cart);
@@ -113,4 +122,13 @@ function checkId(x, y) {
             }
         }
     }
+};
+// function to total user purchase
+function checkOut() {
+    console.log("Thank you for purchasing: ")
+    for (var i = 0; i < cart.length; i++) {
+        total += cart[i].price;
+        console.log("'" + cart[i].product_name + "'");
+    }
+    console.log("Your total is: $" + total);
 };
