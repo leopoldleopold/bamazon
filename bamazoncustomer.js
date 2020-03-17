@@ -70,7 +70,7 @@ function openShop() {
                 + "Price: " + results[i].price + " | "
                 + "Quantity " + results[i].stock_quantity + "\n");
         }
-        setTimeout(function () { buy(); }, 2000);
+        buy();
     });
 };
 
