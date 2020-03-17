@@ -4,9 +4,8 @@ var inquirer = require("inquirer");
 // variables
 var hello = "Welcome to BAMAZON! An online web store" +
     " for all of your shopping needs!" + "\n";
+var valid = false;
 var arr = [];
-var cart = [];
-var total = 0;
 // establish mySQL connection
 var con = mySql.createConnection({
     host: 'localhost',
@@ -46,7 +45,7 @@ function main() {
             var w = answer.main.charAt(0);
             if (w === "E") {
                 console.log("Thank you for using BAMAZON!");
-                setTimeout(function () { connection.end(); }, 1000);
+                setTimeout(function () { con.end(); }, 1000);
             } else {
                 home();
             }
@@ -78,12 +77,12 @@ function home() {
                     forSale();
                     break;
                 case 18:
-                    viewStock();
+                    lowStock();
                     break;
                 case 16:
                     addStock();
                     break;
-                case 15: 
+                case 15:
                     addProduct();
                     break;
                 case 4:
@@ -92,4 +91,85 @@ function home() {
             }
         });
 };
-// product 17, View 18, add invent 16, product 15
+// function to view all stock for Sale
+function forSale() {
+    con.query('SELECT * FROM products', function (error, results) {
+        if (error) throw error;
+        console.log(
+            "|-------------------------|Items|-------------------------|" + "\n"
+        );
+        for (var i = 0; i < results.length; i++) {
+            arr.push(results[i]);
+            console.log("ID: " + results[i].item_id + " | "
+                + "Product: " + results[i].product_name + " | "
+                + "Department: " + results[i].department_name + " | "
+                + "Price: " + results[i].price + " | "
+                + "Quantity " + results[i].stock_quantity + "\n");
+        }
+        if (valid) {
+            addStock();
+            valid = false;
+        }
+        else {
+            home();
+        }
+    });
+};
+// function to view low inventory
+function lowStock() {
+    con.query('SELECT * FROM products WHERE stock_quantity < 5', function (error, results) {
+        if (error) throw error;
+        console.log(
+            "|-------------------------|!!LOW INVENTORY!!|-------------------------|" + "\n"
+        );
+        for (var i = 0; i < results.length; i++) {
+            console.log("ID: " + results[i].item_id + " | "
+                + "Product: " + results[i].product_name + " | "
+                + "Department: " + results[i].department_name + " | "
+                + "Price: " + results[i].price + " | "
+                + "Quantity " + results[i].stock_quantity + "\n");
+        }
+        home();
+    });
+};
+// function to add stock to 
+var addStock = function () {
+    if (valid) {
+        inquirer
+            .prompt([
+                {
+                    name: "id",
+                    type: "number",
+                    message: "What is the ID of the item" +
+                    " you would like to add stock to?"
+                },
+                {
+                    name: "qty",
+                    type: "number",
+                    message: "How much stock would you like to add?"
+                }
+            ])
+            .then(function(answer){
+                var i = answer.id, a = answer.id;
+                i--;
+                var e = answer.qty + arr[i].stock_quantity;
+                con.query(
+                    "UPDATE products SET ? WHERE ?",
+                    [
+                        {
+                            stock_quantity: e
+                        },
+                        {
+                            item_id: a
+                        }
+                    ],
+                )
+                console.log("STOCK ADDED! SHIPMENT RECEIVED!");
+                home();
+            });
+    }
+    else {
+        valid = true;
+        forSale();
+    }
+};
