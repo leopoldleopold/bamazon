@@ -173,3 +173,43 @@ var addStock = function () {
         forSale();
     }
 };
+// function to add product
+var addProduct = function () {
+    console.log("Please enter information for item to be stored in inventory.")
+    inquirer
+        .prompt([
+            {
+                name: "name",
+                type: "input",
+                message: "What is the product name?"
+            },
+            {
+                name: "dpt",
+                type: "input",
+                message: "What department will this item be stored in?"
+            },
+            {
+                name: "price",
+                type: "number",
+                message: "Enter item price in 00000.00 format"
+            },
+            {
+                name: "qty",
+                type: "number",
+                message: "Number of stock to be held?"
+            },
+        ])
+        .then(function(answer){
+            con.query(
+                "INSERT INTO products SET ?",
+                {
+                    product_name: answer.name,
+                    department_name: answer.dpt,
+                    price: answer.price,
+                    stock_quantity: answer.qty
+                }                         
+            )
+            console.log("ITEM ADDED!");
+            home();
+        });
+};
