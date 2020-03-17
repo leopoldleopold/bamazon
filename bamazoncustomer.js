@@ -49,7 +49,7 @@ function home() {
                     break;
                 case "E":
                     console.log("Thank you for using BAMAZON!");
-                    setTimeout(function () { connection.end(); }, 1000);
+                    setTimeout(function () { con.end(); }, 1000);
                     break;
             }
         });

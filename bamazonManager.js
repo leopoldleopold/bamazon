@@ -7,7 +7,6 @@ var hello = "Welcome to BAMAZON! An online web store" +
 var arr = [];
 var cart = [];
 var total = 0;
-var valid = false;
 // establish mySQL connection
 var con = mySql.createConnection({
     host: 'localhost',
@@ -38,19 +37,19 @@ function main() {
                 name: "main",
                 type: "list",
                 message: "Welcome to Manager Mode for BAMAZON." +
-                " Select 'Manager Mode' to Manager Mode" +
-                " Select 'EXIT' to exit BAMAZON.", 
+                    " Select 'Manager Mode' to Manager Mode" +
+                    " Select 'EXIT' to exit BAMAZON.",
                 choices: ["Manager Mode", "EXIT"]
             }
         ])
         .then(function (answer) {
-            var w = answer.home.charAt(0);
-                if (w === E) {
-                    console.log("Thank you for using BAMAZON!");
-                    setTimeout(function () { connection.end(); }, 1000);
-                } else {
-                    home();
-                }
+            var w = answer.main.charAt(0);
+            if (w === "E") {
+                console.log("Thank you for using BAMAZON!");
+                setTimeout(function () { connection.end(); }, 1000);
+            } else {
+                home();
+            }
         });
 };
 // function for home scrn in manager mode
@@ -58,13 +57,39 @@ function home() {
     inquirer
         .prompt([
             {
-                name: "main",
+                name: "home",
                 type: "list",
                 message: "Select 'Products for Sale' to view current inventory." + "\n" +
-                "Select 'View Low Inventory' to view inventory stock below the quantity of 5." + "\n" +
-                "Select 'Add to Inventory' to add additional stock to an item within the current inventory." + "\n" +
-                "Select 'Add New Product' to add a new product to the inventory.",
-                choices: ["Products for Sale", "View Low Inventory", "Add to Inventory", "Add New Product"]
+                    "Select 'View Low Inventory' to view inventory stock below the quantity of 5." + "\n" +
+                    "Select 'Add to Inventory' to add additional stock to an item within the current inventory." + "\n" +
+                    "Select 'Add New Product' to add a new product to the inventory." + "\n" +
+                    "Select 'EXIT' to exit Manager Mode",
+                choices: ["Products for Sale",
+                    "View Low Inventory",
+                    "Add to Inventory",
+                    "Add New Product",
+                    "EXIT"]
             }
-        ]);
-}
+        ])
+        .then(function (answer) {
+            var c = answer.home.length;
+            switch (c) {
+                case 17:
+                    forSale();
+                    break;
+                case 18:
+                    viewStock();
+                    break;
+                case 16:
+                    addStock();
+                    break;
+                case 15: 
+                    addProduct();
+                    break;
+                case 4:
+                    main();
+                    break;
+            }
+        });
+};
+// product 17, View 18, add invent 16, product 15
