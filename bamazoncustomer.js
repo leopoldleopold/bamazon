@@ -7,6 +7,7 @@ var hello = "Welcome to BAMAZON! An online web store" +
 var arr = [];
 var cart = [];
 var total = 0;
+var valid = false;
 // establish mySQL connection
 var con = mySql.createConnection({
     host: 'localhost',
@@ -75,6 +76,7 @@ function openShop() {
 
 // function to allow user to buy
 var buy = function () {
+    valid = false;
     inquirer
         .prompt([
             {
@@ -90,13 +92,13 @@ var buy = function () {
             }
         ])
         .then(function (answer) {
-            var u = answer.id;
+            var u = answer.id, i = answer.id;
             var e = answer.qty;
-            checkId(u, e);
+            checkId(u, e, i);
         });
-}
+};
 // function to check if id exists in database and valid quantity amount
-function checkId(x, y) {
+function checkId(x, y, z) {
     x--;
     if (x > arr.length) {
         console.log("That ID does not exist, please submit selection again.");
@@ -109,30 +111,38 @@ function checkId(x, y) {
                 console.log("Unfortunately we are out of stock....");
                 buy();
             }
-            // |----------------------TEST------------------------------|
-            // to test Checkout
-            else if (1 < cart.length) {
-                checkOut();
-            }
-            // |--------------------END TEST----------------------------|
             else {
-                cart.push(arr[x]);
-                console.log(cart);
-                buy();
+                con.query(
+                    "UPDATE products SET ? WHERE ?",
+                    [
+                        {
+                            stock_quantity: a
+                        },
+                        {
+                            item_id: z
+                        }
+                    ],
+                    function (error) {
+                        if (error) throw err;
+                        cart.push(arr[x]);
+                        checkOut(y);
+                    }
+                )
             }
+
         }
     }
 };
 // function to total user purchase
-function checkOut() {
+function checkOut(a) {
     console.log("Thank you for purchasing: ")
     for (var i = 0; i < cart.length; i++) {
-        total += cart[i].price;
+        total = cart[i].price;
+        total *= a;
         console.log("'" + cart[i].product_name + "'");
     }
     console.log("Your total is: $" + total);
     console.log("\n" + "Thank you for using BAMAZON!");
     cart = [];
-    total = [];
-    setTimeout(function(){home();}, 4000);
+    setTimeout(function () { home(); }, 4000);
 };
