@@ -7,7 +7,6 @@ var hello = "Welcome to BAMAZON! An online web store" +
 var arr = [];
 var cart = [];
 var total = 0;
-var valid = false;
 // establish mySQL connection
 var con = mySql.createConnection({
     host: 'localhost',
@@ -75,7 +74,6 @@ function openShop() {
 };
 // function to allow user to buy
 var buy = function () {
-    valid = false;
     inquirer
         .prompt([
             {
