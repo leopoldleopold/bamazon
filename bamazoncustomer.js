@@ -73,7 +73,6 @@ function openShop() {
         buy();
     });
 };
-
 // function to allow user to buy
 var buy = function () {
     valid = false;
@@ -106,9 +105,14 @@ function checkId(x, y, z) {
     }
     else {
         if (y) {
+            if (arr[x].stock_quantity === 0) {
+                console.log("Unfortunately we are out of stock.....Check back shortly!");
+                buy();
+            }
             var a = arr[x].stock_quantity - y;
             if (a < 0) {
-                console.log("Unfortunately we are out of stock....");
+                console.log("Unfortunately you are requesting more than our current stock!" +
+                " Please order a smaller quantity.");
                 buy();
             }
             else {
