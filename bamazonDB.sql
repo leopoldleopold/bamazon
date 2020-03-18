@@ -44,7 +44,6 @@ VALUES ("Imitation Van Gogh", "Decoration", 65.95, 13);
 INSERT INTO products (product_name, department_name, price, stock_quantity)
 VALUES ("Bicycle", "Sports", 199.99, 5);
 
-BAMAZON
 
 
 
