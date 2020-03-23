@@ -34,9 +34,8 @@ function home() {
                 name: "home",
                 type: "list",
                 message: "Select 'BAMAZON' to enter website." +
-                    " Select 'Purchase History' to view purchase history." +
                     " Select 'EXIT' to exit BAMAZON",
-                choices: ["BAMAZON", "Purchase History", "EXIT"]
+                choices: ["BAMAZON", "EXIT"]
             }
         ])
         .then(function (answer) {
@@ -44,8 +43,6 @@ function home() {
             switch (w) {
                 case "B":
                     openShop();
-                    break;
-                case "P":
                     break;
                 case "E":
                     console.log("Thank you for using BAMAZON!");
