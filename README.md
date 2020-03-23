@@ -7,52 +7,31 @@
 ### Instructions
 To use Bamazon, clone this repository into a folder on your computer. Enter the folder using Terminal or Git Bash. And call the program using the commands "node bamazoncustomer.js" or "node bamazonManager.js" 
 
-#### Commands
-**ALL COMMANDS TO BE EXECUTED AFTER CALLING NODE AND THE BamazonCustomer PROGRAM:**
+**ALL COMMANDS TO BE EXECUTED AFTER CALLING NODE AND THE BamazonCustomer or BamazonManager PROGRAM:**
 
+### Customer Commands -
 *node bamazoncustomer.js*
-###### Song Search:
+###### Customer Mode:
+  *Customer mode will display the items available for purchase. After selecting the item ID and quantity, the user will be greeted with their purchase and total.* 
+![](customer.gif)
+  *If the amount ordered by the customer exceeds availibility their purchase will be denied, followed by a prompt for item ID*
+  ![](noinventory.gif)
 *spotify-this-song*
-###### Movie Search:
-*movie-this*
-###### Concert Search:
-*concert-this*
-###### Random Selection From User History **(Will only work if there is a User History):**
-*random-history*
-###### Display User History **(Will only work if there is a User History):**
-*display-history*
 
-#### Using Commands - 
-#### Spotify Song Search:
-To search for a song, type the following into the command line -  
-
-  *node liri.js spotify-this-song usersong*
-  ![](songsearch.gif)
-
-#### Movie Search:
-To search for a movie, type the following into the command line -
-
-  *node liri.js movie-this usermovie*
-  ![](moviesearch.gif)
+### Manager Commands - 
+*node bamazonManager.js*
+###### Manager Mode: 
+  *Manager mode will allow viewing of items/stock* 
+  ![](viewinventory.gif)
+   
+  *Adding of new items*
+  ![](addProduct.gif)
   
-#### Concert Search:
-To search for a concert, type the following into the command line - 
-
-  *node liri.js concert-this userband*
-  ![](concertsearch.gif)
- 
-#### Random Selection from User History:
-To randomly select a previous search from user history type the following into the command line -
-
-  *node liri.js random-history*
-  ![](randomhistory.gif)
- 
-#### Display all of User History
-To display the User History in it's entirety, type the following into the command line - 
-
-  *node liri.js display-history*
-  ![](displayhistory.gif)
-
+  *Adding of stock to current items*
+  ![](addstock.gif)
+  
+  *Viewing items with stock below the value of 5*
+  ![](lowinventory.gif)
 
 ## OverView
 The app uses node plug-ins *MySql* and *Inquirer*. *MySql* is used to connect with the MySql Database which stores and retrieves Bamazon content. *Inquirer* is used to direct user choice. 
